@@ -7,6 +7,8 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { Mail, Instagram, ArrowUpRight, Github, Linkedin, Twitter, Menu, X, Settings, Save, LogOut, Eye, EyeOff } from 'lucide-react';
 import Lenis from 'lenis';
+import SeoManager from './components/SeoManager';
+import StructuredData from './components/StructuredData';
 
 interface SiteContent {
   hero: {
@@ -150,18 +152,7 @@ export default function App() {
     localStorage.setItem('site_content', JSON.stringify(contentWithTimestamp));
   };
 
-  useEffect(() => {
-    document.title = content.seo.title;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', content.seo.description);
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = "description";
-      meta.content = content.seo.description;
-      document.head.appendChild(meta);
-    }
-  }, [content.seo]);
+
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -270,6 +261,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen selection:bg-white selection:text-black">
+      <SeoManager 
+        currentPathOrSection={activeSection} 
+        titleOverride={content.seo.title} 
+        descriptionOverride={content.seo.description} 
+      />
+      <StructuredData />
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'glass py-4' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">

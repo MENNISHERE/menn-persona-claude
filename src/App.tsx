@@ -5,7 +5,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { Mail, Instagram, ArrowUpRight, Github, Linkedin, Twitter, Menu, X, Settings, Save, LogOut, Eye, EyeOff } from 'lucide-react';
+import { Mail, Instagram, ArrowUpRight, Github, Linkedin, Menu, X } from 'lucide-react';
 import Lenis from 'lenis';
 import SeoManager from './components/SeoManager';
 import StructuredData from './components/StructuredData';
@@ -105,10 +105,10 @@ const DEFAULT_CONTENT: SiteContent = {
     title: "Let's build",
     titleItalic: "the future.",
     email: "MennHq@gmail.com",
-    instagram: "https://instagram.com/menn_maestro",
-    twitter: "https://x.com/menn_maestro",
-    linkedin: "https://linkedin.com/in/Menn-Maestro",
-    github: "https://github.com/MENNISHERE"
+    instagram: "https://instagram.com/MennHq",
+    twitter: "https://x.com/MennHq",
+    linkedin: "https://linkedin.com/in/MennHq",
+    github: "https://github.com/MennHq"
   },
   footer: {
     copyright: "© 2024 MENN Maestro. All rights reserved."
@@ -127,74 +127,41 @@ export default function App() {
   const [pageKey, setPageKey] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionWord, setTransitionWord] = useState<'menn' | 'maestro'>('menn');
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [content, setContent] = useState<SiteContent>(() => {
     const saved = localStorage.getItem('site_content');
     return saved ? JSON.parse(saved) : DEFAULT_CONTENT;
   });
-  const [adminKeyInput, setAdminKeyInput] = useState('');
-  const [isKeyCorrect, setIsKeyCorrect] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [adminTab, setAdminTab] = useState<'content' | 'settings'>('content');
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   
   const lenisRef = useRef<Lenis | null>(null);
 
-  const saveContent = (newContent: SiteContent) => {
-    const contentWithTimestamp = {
-      ...newContent,
-      lastUpdated: new Date().toISOString()
-    };
-    setContent(contentWithTimestamp);
-    localStorage.setItem('site_content', JSON.stringify(contentWithTimestamp));
-  };
-
-
-
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl + Shift + A to trigger admin login
-      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
-        e.preventDefault();
-        if (!isAdmin) {
-          setShowAdminPanel(true);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isAdmin]);
-
-  const [tapCount, setTapCount] = useState(0);
-
-  const handleLogoTouch = () => {
-    setTapCount(prev => prev + 1);
-    setTimeout(() => setTapCount(0), 1000); // Reset after 1s
-    
-    if (tapCount + 1 >= 3) {
-      if (!isAdmin) setShowAdminPanel(true);
-      setTapCount(0);
+    // Migrate old handles to @MennHq if they exist in state/localstorage
+    if (
+      content.contact.instagram.includes('menn_maestro') || 
+      content.contact.twitter.includes('menn_maestro') ||
+      content.contact.linkedin.includes('Menn-Maestro') ||
+      content.contact.github.includes('MENNISHERE')
+    ) {
+      const updatedContact = {
+        ...content.contact,
+        instagram: "https://instagram.com/MennHq",
+        twitter: "https://x.com/MennHq",
+        linkedin: "https://linkedin.com/in/MennHq",
+        github: "https://github.com/MennHq"
+      };
+      const updated = {
+        ...content,
+        contact: updatedContact,
+        lastUpdated: new Date().toISOString()
+      };
+      setContent(updated);
+      localStorage.setItem('site_content', JSON.stringify(updated));
     }
-  };
+  }, [content]);
 
-  const handleAdminLogin = () => {
-    const correctKey = import.meta.env.VITE_ADMIN_KEY || 'momentumgonnapaycountless!';
-    if (adminKeyInput === correctKey) {
-      setIsAdmin(true);
-      setIsKeyCorrect(true);
-      setShowAdminPanel(true);
-      setAdminKeyInput('');
-    } else {
-      alert('Incorrect Key');
-    }
-  };
+
 
   const triggerTransition = (section: string) => {
     if (section === activeSection || isTransitioning) return;
@@ -349,36 +316,7 @@ export default function App() {
       {/* Grain Overlay */}
       <div className="fixed inset-0 z-[102] pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      {/* Maintenance Mode Overlay */}
-      {maintenanceMode && !isAdmin && (
-        <div className="fixed inset-0 z-[400] bg-black flex flex-col items-center justify-center p-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-md"
-          >
-            <h1 className="font-serif text-5xl md:text-7xl mb-8 tracking-tighter">
-              Under <span className="italic opacity-50">Construction</span>
-            </h1>
-            <p className="text-lg opacity-60 font-light leading-relaxed mb-12">
-              We're currently updating the site to bring you a better experience. Please check back soon.
-            </p>
-            <div className="flex items-center justify-center gap-4 opacity-30">
-              <div className="w-12 h-[1px] bg-white" />
-              <span className="text-[10px] uppercase tracking-[0.5em]">MENN Maestro</span>
-              <div className="w-12 h-[1px] bg-white" />
-            </div>
-          </motion.div>
-          
-          {/* Secret Admin Access in Maintenance Mode */}
-          <button 
-            onClick={() => setShowAdminPanel(true)}
-            className="absolute bottom-8 text-[8px] uppercase tracking-widest opacity-10 hover:opacity-100 transition-opacity"
-          >
-            Admin Login
-          </button>
-        </div>
-      )}
+
 
         <motion.main
           key={pageKey}
@@ -553,9 +491,11 @@ export default function App() {
               @{content.contact.instagram.split('/').pop()?.toUpperCase()}
             </a>
 
-            <div className="flex gap-8 mt-4">
-              <a href={content.contact.twitter} target="_blank" rel="noopener noreferrer">
-                <Twitter size={20} className="opacity-40 hover:opacity-100 transition-opacity cursor-pointer" />
+            <div className="flex gap-8 mt-4 items-center">
+              <a href={content.contact.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="w-[18px] h-[18px] opacity-40 hover:opacity-100 transition-opacity cursor-pointer fill-current text-white">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
               </a>
               <a href={content.contact.linkedin} target="_blank" rel="noopener noreferrer">
                 <Linkedin size={20} className="opacity-40 hover:opacity-100 transition-opacity cursor-pointer" />
@@ -577,10 +517,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-[0.2em] opacity-40">
           <div 
             className="font-serif text-sm cursor-pointer select-none" 
-            onClick={() => {
-              triggerTransition('hero');
-              handleLogoTouch();
-            }}
+            onClick={() => triggerTransition('hero')}
           >
             {content.hero.title} <span className="italic">{content.hero.titleItalic}</span>
           </div>
@@ -611,14 +548,16 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6"
+            onClick={() => setShowPrivacyModal(false)}
+            className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6 cursor-pointer"
           >
             <motion.div 
               initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
               transition={{ type: 'spring', duration: 0.4 }}
-              className="w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col max-h-[85vh] shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col max-h-[85vh] shadow-2xl overflow-hidden cursor-default"
             >
               <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
                 <div>
@@ -639,27 +578,27 @@ export default function App() {
                   <h3 className="font-serif text-white tracking-wide text-lg">1. Introduction</h3>
                   <p>Welcome to <strong>MennHq</strong> (accessible via <a href="https://mennhq.vercel.app" className="underline hover:text-white text-white/90">mennhq.vercel.app</a>), the official platform representing <strong>Menn</strong> (also known as <strong>Menn Maestro</strong> / <strong>Menn Hq</strong>). We value your trust and are fully committed to protecting your online privacy.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">2. Information We Collect</h3>
                   <p>As a personal digital display and portfolio, <strong>MennHq</strong> does not actively collect, sell, or process personal identifying information (PII). We do not set tracking, marketing, or behavioral cookies. Any information sent to us through official contact emails (<a href="mailto:MennHq@gmail.com" className="underline hover:text-white text-white/90">MennHq@gmail.com</a>) or verified profile links remains entirely private and is exclusively used to answer your messages.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">3. Data Security</h3>
                   <p>The security of the <strong>Menn Maestro</strong> platform and system is of paramount importance to us. We regularly review our integration channels, disable unused dependencies, and cooperate with premium secure cloud infrastructures (like Vercel and secure CDN layers) to deliver top-tier stability and protect our public site code.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">4. Outbound Links</h3>
                   <p>Our website features connections to global networks, third-party social services, and other product pages. <strong>MennHq</strong> does not control these destination providers. We strongly recommend reading the respective policies of any external links you choose to click.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">5. Future Updates</h3>
                   <p>We reserves the right to review and update this Privacy Policy statement in order to stay compliant with standard global frameworks. All changes will become active on this page immediately upon deployment.</p>
                 </section>
-
+ 
                 <section className="space-y-2 pb-4">
                   <h3 className="font-serif text-white tracking-wide text-lg">6. Contact Information</h3>
                   <p>For inquiries, feedback, or matters related to privacy under the <strong>Menn</strong> identity, please connect with us:</p>
@@ -670,7 +609,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
+ 
       {/* Terms of Service Modal */}
       <AnimatePresence>
         {showTermsModal && (
@@ -678,14 +617,16 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6"
+            onClick={() => setShowTermsModal(false)}
+            className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-xl flex items-center justify-center p-6 cursor-pointer"
           >
             <motion.div 
               initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
               transition={{ type: 'spring', duration: 0.4 }}
-              className="w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col max-h-[85vh] shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col max-h-[85vh] shadow-2xl overflow-hidden cursor-default"
             >
               <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
                 <div>
@@ -706,22 +647,22 @@ export default function App() {
                   <h3 className="font-serif text-white tracking-wide text-lg">1. Acceptance of Terms</h3>
                   <p>By entering and using the site <strong>MennHq</strong> (accessible via <a href="https://mennhq.vercel.app" className="underline hover:text-white text-white/90">mennhq.vercel.app</a>), you fully consent to keep all binding guidelines outlined in our Terms of Service. If you do not agree with these principles, your permission to navigate the site is immediately revoked.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">2. Intellectual Ownership</h3>
                   <p>All digital products, original UI workflows, vector design assets, typography layouts, code, screenshots, and visual branding concepts published under the <strong>Menn</strong> / <strong>Menn Maestro</strong> brand are the exclusive property of <strong>Menn Hq</strong>. No materials, assets, or descriptions may be duplicated, scraped, repurposed, or resold without our explicit, written prior legal consent.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">3. Disclaimer and Limitations of liability</h3>
                   <p>The materials, showcases, and downloads on <strong>MennHq</strong> are provided strictly on an "as is" and "as available" basis. <strong>Menn</strong> provides no warranties, direct or implied. We shall under no circumstances be held responsible for system interruptions, errors, or files fetched outside our verified domains.</p>
                 </section>
-
+ 
                 <section className="space-y-2">
                   <h3 className="font-serif text-white tracking-wide text-lg">4. User Conduct</h3>
                   <p>Visitors are expected to act reasonably and respectfully. Automated harvesting scripts, bots, unauthorized penetration testing, attempts to bypass the console system, or launching malicious actions against our servers or visitors is strictly prohibited and subject to legal actions.</p>
                 </section>
-
+ 
                 <section className="space-y-2 pb-4">
                   <h3 className="font-serif text-white tracking-wide text-lg">5. Governing Jurisdiction</h3>
                   <p>These terms represent the entire agreement between the visitor and <strong>MennHq</strong>. Any disputes related to the contents of <strong>Menn Maestro</strong> shall be governed by standard electronic information protection laws without regard to conflict of law principles.</p>
@@ -732,538 +673,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Admin Login Modal */}
-      <AnimatePresence>
-        {showAdminPanel && !isAdmin && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[300] bg-black/90 backdrop-blur-xl flex items-center justify-center p-6"
-          >
-            <motion.div 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-md bg-zinc-900 p-8 rounded-3xl border border-white/10 shadow-2xl"
-            >
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-serif">Admin Access</h2>
-                <button onClick={() => setShowAdminPanel(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-                  <X size={20} />
-                </button>
-              </div>
-              <p className="text-sm opacity-50 mb-6">Enter your access key to enable edit mode.</p>
-              <div className="space-y-4">
-                <div className="relative">
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="Access Key"
-                    value={adminKeyInput}
-                    onChange={(e) => setAdminKeyInput(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
-                    className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-white/30 transition-colors outline-none pr-12"
-                  />
-                  <button 
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-                <button 
-                  onClick={handleAdminLogin}
-                  className="w-full bg-white text-black font-bold py-3 rounded-xl text-sm hover:bg-zinc-200 transition-colors"
-                >
-                  Unlock Editor
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Admin Editor Panel */}
-      <AnimatePresence>
-        {isAdmin && showAdminPanel && (
-          <motion.div 
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 bottom-0 w-full md:w-[450px] z-[300] bg-zinc-900 border-l border-white/10 shadow-2xl flex flex-col select-text"
-          >
-            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <h2 className="font-serif text-lg">Admin Panel</h2>
-              </div>
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => setIsAdmin(false)} 
-                  className="p-2 hover:bg-white/5 rounded-lg transition-colors text-red-400"
-                  title="Logout"
-                >
-                  <LogOut size={18} />
-                </button>
-                <button 
-                  onClick={() => setShowAdminPanel(false)} 
-                  className="p-2 hover:bg-white/5 rounded-lg transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-            </div>
-
-            {/* Admin Tabs */}
-            <div className="flex px-6 border-b border-white/10 bg-black/10">
-              <button 
-                onClick={() => setAdminTab('content')}
-                className={`px-4 py-3 text-[10px] uppercase tracking-widest font-bold transition-all border-b-2 ${adminTab === 'content' ? 'border-white opacity-100' : 'border-transparent opacity-40 hover:opacity-60'}`}
-              >
-                Content
-              </button>
-              <button 
-                onClick={() => setAdminTab('settings')}
-                className={`px-4 py-3 text-[10px] uppercase tracking-widest font-bold transition-all border-b-2 ${adminTab === 'settings' ? 'border-white opacity-100' : 'border-transparent opacity-40 hover:opacity-60'}`}
-              >
-                Settings
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6 space-y-10 no-scrollbar" data-lenis-prevent>
-              {adminTab === 'content' && (
-                <>
-                  {/* Hero Section Editing */}
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">Hero Section</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Sub-Header</label>
-                        <input 
-                          value={content.hero.subHeader}
-                          onChange={(e) => saveContent({ ...content, hero: { ...content.hero, subHeader: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Main Title</label>
-                          <input 
-                            value={content.hero.title}
-                            onChange={(e) => saveContent({ ...content, hero: { ...content.hero, title: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Italic Title</label>
-                          <input 
-                            value={content.hero.titleItalic}
-                            onChange={(e) => saveContent({ ...content, hero: { ...content.hero, titleItalic: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Description</label>
-                        <textarea 
-                          value={content.hero.description}
-                          onChange={(e) => saveContent({ ...content, hero: { ...content.hero, description: e.target.value } })}
-                          rows={3}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none resize-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Philosophy Section Editing */}
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">Philosophy Section</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Section Tag</label>
-                        <input 
-                          value={content.philosophy.tag}
-                          onChange={(e) => saveContent({ ...content, philosophy: { ...content.philosophy, tag: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Title Line 1</label>
-                          <input 
-                            value={content.philosophy.title}
-                            onChange={(e) => saveContent({ ...content, philosophy: { ...content.philosophy, title: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Title Line 2 (Italic)</label>
-                          <input 
-                            value={content.philosophy.titleItalic}
-                            onChange={(e) => saveContent({ ...content, philosophy: { ...content.philosophy, titleItalic: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Pillars Editing */}
-                    <div className="pt-4 space-y-6">
-                      <label className="text-[9px] uppercase tracking-widest opacity-30 block">Philosophy Pillars</label>
-                      {content.philosophy.pillars.map((pillar, idx) => (
-                        <div key={idx} className="p-4 bg-black/40 rounded-2xl border border-white/5 space-y-4">
-                          <div className="flex justify-between items-center">
-                            <span className="text-[10px] font-bold opacity-30">Pillar {idx + 1}</span>
-                          </div>
-                          <div>
-                            <label className="text-[8px] uppercase tracking-widest opacity-20 mb-1 block">Image URL</label>
-                            <input 
-                              value={pillar.img}
-                              onChange={(e) => {
-                                const newPillars = [...content.philosophy.pillars];
-                                newPillars[idx].img = e.target.value;
-                                saveContent({ ...content, philosophy: { ...content.philosophy, pillars: newPillars } });
-                              }}
-                              className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-[10px] focus:border-white/20 outline-none"
-                            />
-                          </div>
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label className="text-[8px] uppercase tracking-widest opacity-20 mb-1 block">Tag</label>
-                              <input 
-                                value={pillar.tag}
-                                onChange={(e) => {
-                                  const newPillars = [...content.philosophy.pillars];
-                                  newPillars[idx].tag = e.target.value;
-                                  saveContent({ ...content, philosophy: { ...content.philosophy, pillars: newPillars } });
-                                }}
-                                className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-xs focus:border-white/20 outline-none"
-                              />
-                            </div>
-                            <div>
-                              <label className="text-[8px] uppercase tracking-widest opacity-20 mb-1 block">Title</label>
-                              <input 
-                                value={pillar.title}
-                                onChange={(e) => {
-                                  const newPillars = [...content.philosophy.pillars];
-                                  newPillars[idx].title = e.target.value;
-                                  saveContent({ ...content, philosophy: { ...content.philosophy, pillars: newPillars } });
-                                }}
-                                className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-xs focus:border-white/20 outline-none"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label className="text-[8px] uppercase tracking-widest opacity-20 mb-1 block">Description</label>
-                            <textarea 
-                              value={pillar.desc}
-                              onChange={(e) => {
-                                const newPillars = [...content.philosophy.pillars];
-                                newPillars[idx].desc = e.target.value;
-                                saveContent({ ...content, philosophy: { ...content.philosophy, pillars: newPillars } });
-                              }}
-                              rows={3}
-                              className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-xs focus:border-white/20 outline-none resize-none"
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* About Section Editing */}
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">About Section</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Section Tag</label>
-                        <input 
-                          value={content.about.tag}
-                          onChange={(e) => saveContent({ ...content, about: { ...content.about, tag: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Title</label>
-                          <input 
-                            value={content.about.title}
-                            onChange={(e) => saveContent({ ...content, about: { ...content.about, title: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Title Italic</label>
-                          <input 
-                            value={content.about.titleItalic}
-                            onChange={(e) => saveContent({ ...content, about: { ...content.about, titleItalic: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Image URL</label>
-                        <input 
-                          value={content.about.image}
-                          onChange={(e) => saveContent({ ...content, about: { ...content.about, image: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      {content.about.paragraphs.map((p, idx) => (
-                        <div key={idx}>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Paragraph {idx + 1}</label>
-                          <textarea 
-                            value={p}
-                            onChange={(e) => {
-                              const newParagraphs = [...content.about.paragraphs];
-                              newParagraphs[idx] = e.target.value;
-                              saveContent({ ...content, about: { ...content.about, paragraphs: newParagraphs } });
-                            }}
-                            rows={3}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none resize-none"
-                          />
-                        </div>
-                      ))}
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Quote</label>
-                        <textarea 
-                          value={content.about.quote}
-                          onChange={(e) => saveContent({ ...content, about: { ...content.about, quote: e.target.value } })}
-                          rows={2}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none resize-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Contact Section Editing */}
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">Contact Section</h3>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Tag</label>
-                          <input 
-                            value={content.contact.tag}
-                            onChange={(e) => saveContent({ ...content, contact: { ...content.contact, tag: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Email</label>
-                          <input 
-                            value={content.contact.email}
-                            onChange={(e) => saveContent({ ...content, contact: { ...content.contact, email: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Title</label>
-                          <input 
-                            value={content.contact.title}
-                            onChange={(e) => saveContent({ ...content, contact: { ...content.contact, title: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Title Italic</label>
-                          <input 
-                            value={content.contact.titleItalic}
-                            onChange={(e) => saveContent({ ...content, contact: { ...content.contact, titleItalic: e.target.value } })}
-                            className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Instagram URL</label>
-                        <input 
-                          value={content.contact.instagram}
-                          onChange={(e) => saveContent({ ...content, contact: { ...content.contact, instagram: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Twitter URL</label>
-                        <input 
-                          value={content.contact.twitter}
-                          onChange={(e) => saveContent({ ...content, contact: { ...content.contact, twitter: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">LinkedIn URL</label>
-                        <input 
-                          value={content.contact.linkedin}
-                          onChange={(e) => saveContent({ ...content, contact: { ...content.contact, linkedin: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">GitHub URL</label>
-                        <input 
-                          value={content.contact.github}
-                          onChange={(e) => saveContent({ ...content, contact: { ...content.contact, github: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Footer Editing */}
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">Footer</h3>
-                    <div>
-                      <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Copyright Text</label>
-                      <input 
-                        value={content.footer.copyright}
-                        onChange={(e) => saveContent({ ...content, footer: { ...content.footer, copyright: e.target.value } })}
-                        className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {adminTab === 'settings' && (
-                <div className="space-y-10">
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">General Settings</h3>
-                    <div className="flex items-center justify-between p-4 bg-black/40 rounded-2xl border border-white/5">
-                      <div>
-                        <span className="text-sm block">Maintenance Mode</span>
-                        <span className="text-[9px] opacity-30 uppercase tracking-widest">Hide site from public</span>
-                      </div>
-                      <button 
-                        onClick={() => setMaintenanceMode(!maintenanceMode)}
-                        className={`w-10 h-5 rounded-full transition-colors relative ${maintenanceMode ? 'bg-green-500' : 'bg-zinc-700'}`}
-                      >
-                        <motion.div 
-                          animate={{ x: maintenanceMode ? 22 : 2 }}
-                          className="absolute top-1 w-3 h-3 bg-white rounded-full"
-                        />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">SEO Settings</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Page Title</label>
-                        <input 
-                          value={content.seo.title}
-                          onChange={(e) => saveContent({ ...content, seo: { ...content.seo, title: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Meta Description</label>
-                        <textarea 
-                          value={content.seo.description}
-                          onChange={(e) => saveContent({ ...content, seo: { ...content.seo, description: e.target.value } })}
-                          rows={2}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none resize-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[9px] uppercase tracking-widest opacity-30 mb-2 block">Keywords (comma separated)</label>
-                        <input 
-                          value={content.seo.keywords}
-                          onChange={(e) => saveContent({ ...content, seo: { ...content.seo, keywords: e.target.value } })}
-                          className="w-full bg-black border border-white/5 rounded-lg px-3 py-2 text-sm focus:border-white/20 transition-colors outline-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">Data Management</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <button 
-                        onClick={() => {
-                          const data = JSON.stringify(content, null, 2);
-                          const blob = new Blob([data], { type: 'application/json' });
-                          const url = URL.createObjectURL(blob);
-                          const a = document.createElement('a');
-                          a.href = url;
-                          a.download = `site-content-${new Date().toISOString().split('T')[0]}.json`;
-                          a.click();
-                        }}
-                        className="p-4 bg-black/40 rounded-2xl border border-white/5 hover:bg-white/5 transition-colors text-left"
-                      >
-                        <span className="text-[9px] uppercase tracking-widest opacity-30 block mb-1">Export</span>
-                        <span className="text-xs">Backup JSON</span>
-                      </button>
-                      <button 
-                        onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = 'application/json';
-                          input.onchange = (e: any) => {
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                            reader.onload = (re: any) => {
-                              try {
-                                const json = JSON.parse(re.target.result);
-                                saveContent(json);
-                                alert('Content imported successfully!');
-                              } catch (err) {
-                                alert('Invalid JSON file');
-                              }
-                            };
-                            reader.readAsText(file);
-                          };
-                          input.click();
-                        }}
-                        className="p-4 bg-black/40 rounded-2xl border border-white/5 hover:bg-white/5 transition-colors text-left"
-                      >
-                        <span className="text-[9px] uppercase tracking-widest opacity-30 block mb-1">Import</span>
-                        <span className="text-xs">Restore JSON</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-[10px] uppercase tracking-widest opacity-40 font-bold">Danger Zone</h3>
-                    <button 
-                      onClick={() => {
-                        if (confirm('Are you sure you want to reset all content to default? This cannot be undone.')) {
-                          saveContent(DEFAULT_CONTENT);
-                        }
-                      }}
-                      className="w-full p-4 bg-red-500/10 rounded-2xl border border-red-500/20 hover:bg-red-500/20 transition-colors text-left"
-                    >
-                      <span className="text-xs text-red-400">Reset to Defaults</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 bg-black/40 border-t border-white/10">
-              <div className="flex items-center gap-3 text-[10px] opacity-40">
-                <Save size={12} />
-                <span>Changes are saved automatically to local storage.</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Admin Floating Trigger (Visible when logged in) */}
-      {isAdmin && !showAdminPanel && (
-        <motion.button
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          onClick={() => setShowAdminPanel(true)}
-          className="fixed bottom-8 right-8 z-[250] w-14 h-14 bg-white text-black rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform"
-        >
-          <Settings size={24} />
-        </motion.button>
-      )}
     </div>
   );
 }

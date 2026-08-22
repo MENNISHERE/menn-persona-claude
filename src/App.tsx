@@ -211,6 +211,20 @@ export default function App() {
       setIsScrolled(window.scrollY > 50);
     };
 
+    // Check initial path for deep links / modals
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('privacy')) {
+      setShowPrivacyModal(true);
+    } else if (path.includes('terms')) {
+      setShowTermsModal(true);
+    } else if (path.includes('about')) {
+      const el = document.getElementById('about');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (path.includes('contact')) {
+      const el = document.getElementById('contact');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -524,7 +538,19 @@ export default function App() {
           <div className="text-center md:text-left flex flex-col items-center md:items-start gap-1">
             <div>{content.footer.copyright}</div>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-6 md:gap-8 items-center">
+            <a 
+              href="/docs" 
+              className="hover:opacity-100 cursor-pointer transition-opacity uppercase tracking-widest text-[10px] text-white"
+            >
+              Docs
+            </a>
+            <a 
+              href="/llms.txt" 
+              className="hover:opacity-100 cursor-pointer transition-opacity uppercase tracking-widest text-[10px] text-white"
+            >
+              LLMs.txt
+            </a>
             <button 
               onClick={() => setShowPrivacyModal(true)} 
               className="hover:opacity-100 cursor-pointer transition-opacity uppercase tracking-widest text-[10px] bg-transparent border-none text-white font-sans outline-none"
@@ -672,7 +698,6 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }

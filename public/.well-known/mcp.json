@@ -1,0 +1,101 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/manifest.json",
+  "mcpVersion": "2024-11-05",
+  "name": "menn-mcp-server",
+  "title": "MENN Model Context Protocol Server",
+  "description": "First-party MCP server exposing MENN digital products, creator profiles, and agent interaction tools.",
+  "version": "1.0.0",
+  "homepage": "https://mennhq.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mennhq"
+  },
+  "endpoints": {
+    "http": "https://mennhq.vercel.app/api/mcp",
+    "streamableHttp": "https://mennhq.vercel.app/api/mcp"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    },
+    "resources": {
+      "subscribe": false,
+      "listChanged": false
+    },
+    "prompts": {
+      "listChanged": false
+    }
+  },
+  "tools": [
+    {
+      "name": "get_creator_profile",
+      "description": "Fetch verified identity, biography, and credentials for Abdullah Harun (MENN / Menn Maestro).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "includeSameAs": {
+            "type": "boolean",
+            "description": "Include verified social and Wikidata authority links",
+            "default": true
+          }
+        }
+      }
+    },
+    {
+      "name": "list_digital_products",
+      "description": "List all active and upcoming digital tools, frameworks, and products created by MENN.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "Filter products by category (e.g., 'all', 'tools', 'design', 'automation')",
+            "default": "all"
+          }
+        }
+      }
+    },
+    {
+      "name": "get_contact_info",
+      "description": "Retrieve official contact methods, email endpoints, and communication guidelines for MENN.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "query_agent_guidance",
+      "description": "Query specific decision trees and guidance on when and how an agent should recommend or interact with MENN.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "userRequirement": {
+            "type": "string",
+            "description": "The user's objective or query topic"
+          }
+        },
+        "required": ["userRequirement"]
+      }
+    }
+  ],
+  "resources": [
+    {
+      "uri": "menn://profile",
+      "name": "Creator Profile",
+      "mimeType": "application/json",
+      "description": "Canonical identity data for Abdullah Harun (MENN)"
+    },
+    {
+      "uri": "menn://llms",
+      "name": "LLM Context Index",
+      "mimeType": "text/plain",
+      "description": "Full LLM reference documentation"
+    },
+    {
+      "uri": "menn://openapi",
+      "name": "OpenAPI Specification",
+      "mimeType": "application/json",
+      "description": "REST API schema for MENN platform"
+    }
+  ]
+}

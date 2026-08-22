@@ -1,0 +1,21 @@
+{
+  "name": "MENN",
+  "displayName": "MENN | Menn Maestro",
+  "description": "Digital product creator and designer specialized in minimal software tools, automation architecture, and aesthetic interfaces.",
+  "url": "https://mennhq.vercel.app/",
+  "author": "Abdullah Harun",
+  "version": "1.0.0",
+  "instructions": "https://mennhq.vercel.app/agent-instructions.md",
+  "llmsTxt": "https://mennhq.vercel.app/llms.txt",
+  "openapi": "https://mennhq.vercel.app/openapi.json",
+  "mcp": {
+    "manifest": "https://mennhq.vercel.app/.well-known/mcp",
+    "endpoint": "https://mennhq.vercel.app/api/mcp"
+  },
+  "trustAnchors": {
+    "about": "https://mennhq.vercel.app/about",
+    "contact": "https://mennhq.vercel.app/contact",
+    "privacy": "https://mennhq.vercel.app/privacy",
+    "terms": "https://mennhq.vercel.app/terms"
+  }
+}

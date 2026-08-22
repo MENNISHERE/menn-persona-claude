@@ -1,0 +1,82 @@
+openapi: 3.1.0
+info:
+  title: MENN Platform API & MCP Services
+  summary: Official REST and Model Context Protocol API for MENN (Menn Maestro / Abdullah Harun)
+  description: Developer and agent interface for retrieving creator profile data, digital product catalogs, contact endpoints, and MCP integration services for MENN.
+  version: 1.0.0
+  contact:
+    name: MENN (Abdullah Harun)
+    email: MennHq@gmail.com
+    url: https://mennhq.vercel.app/contact
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://mennhq.vercel.app
+    description: Production Vercel Host
+paths:
+  /llms.txt:
+    get:
+      summary: Get LLM reference file
+      description: Returns standard markdown index optimized for large language models.
+      responses:
+        '200':
+          description: Standard markdown context file
+          content:
+            text/markdown:
+              schema:
+                type: string
+  /openapi.json:
+    get:
+      summary: Get OpenAPI 3.1 Specification
+      description: Returns machine-readable OpenAPI schema for the MENN platform.
+      responses:
+        '200':
+          description: OpenAPI JSON Schema
+          content:
+            application/json:
+              schema:
+                type: object
+  /.well-known/mcp:
+    get:
+      summary: Get MCP Server Manifest
+      description: Returns Model Context Protocol manifest describing available tools and endpoints.
+      responses:
+        '200':
+          description: MCP Manifest
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/mcp:
+    post:
+      summary: MCP JSON-RPC Endpoint
+      description: Execute JSON-RPC 2.0 requests against the MENN MCP Server tools.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jsonrpc:
+                  type: string
+                  example: '2.0'
+                id:
+                  type: integer
+                  example: 1
+                method:
+                  type: string
+                  example: tools/call
+                params:
+                  type: object
+              required:
+                - jsonrpc
+                - method
+      responses:
+        '200':
+          description: JSON-RPC 2.0 Response
+          content:
+            application/json:
+              schema:
+                type: object

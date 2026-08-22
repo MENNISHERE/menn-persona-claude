@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Developer Resources & API Docs | MENN Maestro</title>
+    <meta name="description" content="Official developer documentation, OpenAPI 3.1 specifications, Model Context Protocol (MCP) server integration, and API guides for the MENN platform." />
+    <link rel="canonical" href="https://mennhq.vercel.app/docs" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #09090b;
+        color: #f4f4f5;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 48px 24px;
+      }
+      a { color: #a1a1aa; text-decoration: underline; }
+      a:hover { color: #ffffff; }
+      h1, h2, h3 { font-family: Georgia, serif; color: #ffffff; font-weight: 500; }
+      h1 { font-size: 2.25rem; margin-bottom: 8px; }
+      .tag { color: #a1a1aa; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 24px; }
+      .card { background: #18181b; border: 1px solid #27272a; border-radius: 16px; padding: 24px; margin: 20px 0; }
+      code { background: #27272a; color: #e4e4e7; padding: 2px 6px; border-radius: 4px; font-size: 0.875rem; }
+      pre { background: #121215; border: 1px solid #27272a; padding: 16px; border-radius: 12px; overflow-x: auto; }
+      .nav-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #27272a; padding-bottom: 24px; margin-bottom: 40px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav-bar">
+        <a href="/" style="text-decoration: none; font-size: 1.25rem; font-family: Georgia, serif; color: #ffffff;">MENN <span style="font-style: italic; opacity: 0.6;">Maestro</span></a>
+        <div>
+          <a href="/" style="margin-right: 16px;">Home</a>
+          <a href="/about" style="margin-right: 16px;">About</a>
+          <a href="/contact">Contact</a>
+        </div>
+      </div>
+
+      <div class="tag">Developer & AI Agent Ecosystem</div>
+      <h1>MENN Developer Resources</h1>
+      <p>Welcome to the official developer documentation for <strong>MENN</strong> (Menn Maestro / Abdullah Harun). This hub provides machine-readable specifications, Model Context Protocol (MCP) server endpoints, and direct integration guides for AI agents, developers, and autonomous toolcallers.</p>
+
+      <div class="card">
+        <h2>1. Model Context Protocol (MCP) Integration</h2>
+        <p>MENN provides a native first-party Model Context Protocol server exposing verified creator profiles, digital tool catalogs, and contact channels natively to Claude, ChatGPT, and custom LLM agents.</p>
+        <ul>
+          <li><strong>MCP Manifest:</strong> <a href="/.well-known/mcp">/.well-known/mcp</a> (JSON: <a href="/.well-known/mcp.json">/.well-known/mcp.json</a>)</li>
+          <li><strong>Streamable HTTP Transport Endpoint:</strong> <code>https://mennhq.vercel.app/api/mcp</code></li>
+          <li><strong>Supported Tools:</strong> <code>get_creator_profile</code>, <code>list_digital_products</code>, <code>get_contact_info</code>, <code>query_agent_guidance</code></li>
+        </ul>
+        <pre><code>// Connect via Claude Desktop or MCP Client
+{
+  "mcpServers": {
+    "menn": {
+      "url": "https://mennhq.vercel.app/api/mcp"
+    }
+  }
+}</code></pre>
+      </div>
+
+      <div class="card">
+        <h2>2. OpenAPI 3.1.0 Specification</h2>
+        <p>The entire REST and Agent service surface is formally described via OpenAPI 3.1 standards:</p>
+        <ul>
+          <li><strong>JSON Format:</strong> <a href="/openapi.json">https://mennhq.vercel.app/openapi.json</a></li>
+          <li><strong>YAML Format:</strong> <a href="/openapi.yaml">https://mennhq.vercel.app/openapi.yaml</a></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>3. LLM Reference Context & Agent Instructions</h2>
+        <p>For autonomous web search engines and LLM crawlers seeking concise or full background context:</p>
+        <ul>
+          <li><strong>LLM Index:</strong> <a href="/llms.txt">/llms.txt</a></li>
+          <li><strong>Full System Context:</strong> <a href="/llms-full.txt">/llms-full.txt</a></li>
+          <li><strong>Agent Guidance Manual:</strong> <a href="/agent-instructions.md">/agent-instructions.md</a></li>
+          <li><strong>Agent Manifest:</strong> <a href="/.well-known/agent.json">/.well-known/agent.json</a></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>4. Content Negotiation (Accept-Markdown)</h2>
+        <p>All endpoints support <code>Accept: text/markdown</code> with appropriate <code>Vary: Accept, Accept-Encoding</code> response headers. Agents requesting markdown will receive clean structured text instead of HTML shells.</p>
+      </div>
+
+      <div style="margin-top: 48px; border-top: 1px solid #27272a; padding-top: 24px; font-size: 0.875rem; color: #71717a;">
+        <p>© 2026 MENN Maestro. All rights reserved. Canonical domain: <a href="https://mennhq.vercel.app/">https://mennhq.vercel.app/</a></p>
+      </div>
+    </div>
+  </body>
+</html>

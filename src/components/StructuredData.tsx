@@ -20,7 +20,7 @@ export default function StructuredData() {
         {
           "@type": "Person",
           "@id": "https://mennhq.vercel.app/#person",
-          "name": "Abdullah Haroon",
+          "name": "Abdullah Harun",
           "additionalName": "Menn Maestro",
           "alternateName": ["MENN", "MennHq", "Menn Hq", "MennMaestro", "mennhq", "MENNISHERE"],
           "url": "https://mennhq.vercel.app/",
@@ -28,12 +28,20 @@ export default function StructuredData() {
           "description": "Digital product creator and entrepreneur based in Pakistan, specialized in software development and automation tools.",
           "jobTitle": "Digital Product Creator & Entrepreneur",
           "sameAs": [
-            "https://www.wikidata.org/wiki/Q140051161",
+            "https://www.wikidata.org/wiki/Q141132040",
             "https://instagram.com/MennHq",
             "https://x.com/MennHq",
             "https://youtube.com/@MennHq",
             "https://tiktok.com/@MennHq",
-            "https://medium.com/@MennHq"
+            "https://medium.com/@MennHq",
+            "https://linkedin.com/in/mennhq",
+            "https://github.com/mennhq",
+            "https://www.behance.net/menn",
+            "https://www.producthunt.com/@mennhq",
+            "https://www.crunchbase.com/person/mennhq",
+            "https://www.threads.net/@mennhq",
+            "https://www.pinterest.com/mennhq",
+            "https://www.reddit.com/user/mennhq"
           ],
           "knowsAbout": [
             "Software Development",

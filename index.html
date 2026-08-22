@@ -32,11 +32,18 @@
     <meta property="twitter:description" content="Explore original digital products, vision, and projects by Menn Maestro. The official hub of MennHq." />
     <meta property="twitter:image" content="https://mennhq.vercel.app/Vision & Ambition.png" />
 
+    <!-- Agent & Machine-Readable Declarations -->
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM Context Index" />
+    <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="LLM Full Context" />
+    <link rel="alternate" type="application/json" href="/.well-known/mcp" title="MCP Server Manifest" />
+    <link rel="alternate" type="application/json" href="/openapi.json" title="OpenAPI 3.1 Specification" />
+    <link rel="alternate" type="text/markdown" href="/index.md" title="Markdown Version" />
+
     <!-- Google Site Verification Link and Search Engine Helpers -->
     <meta name="google-site-verification" content="google612658a234746882" />
     <link rel="canonical" href="https://mennhq.vercel.app/" />
 
-    <!-- Structured Data JSON-LD for rich searches -->
+    <!-- Structured Data JSON-LD for rich searches & entity resolution -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -46,32 +53,68 @@
           "@id": "https://mennhq.vercel.app/#website",
           "url": "https://mennhq.vercel.app/",
           "name": "MENN",
-          "alternateName": ["Menn Maestro", "MENNISHERE", "MennHq"],
+          "alternateName": ["Menn Maestro", "MENNISHERE", "MennHq", "MENN Platform"],
+          "description": "Official platform of MENN (Menn Maestro / Abdullah Harun). Discover minimal digital products, automation tools, and design engineering.",
           "publisher": {
             "@id": "https://mennhq.vercel.app/#person"
           }
         },
         {
+          "@type": "Organization",
+          "@id": "https://mennhq.vercel.app/#organization",
+          "name": "MennHq",
+          "alternateName": ["MENN", "Menn Maestro"],
+          "url": "https://mennhq.vercel.app/",
+          "logo": "https://mennhq.vercel.app/android-chrome-512x512.png",
+          "founder": {
+            "@id": "https://mennhq.vercel.app/#person"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "MennHq@gmail.com",
+            "contactType": "Customer and Developer Support"
+          },
+          "sameAs": [
+            "https://www.wikidata.org/wiki/Q141132040",
+            "https://x.com/MennHq",
+            "https://github.com/mennhq"
+          ]
+        },
+        {
           "@type": "Person",
           "@id": "https://mennhq.vercel.app/#person",
-          "name": "Abdullah Haroon",
+          "name": "Abdullah Harun",
           "additionalName": "Menn Maestro",
           "alternateName": ["MENN", "MennHq", "Menn Hq", "MennMaestro", "mennhq", "MENNISHERE"],
           "url": "https://mennhq.vercel.app/",
-          "description": "Digital product creator and entrepreneur based in Pakistan, specialized in software development and automation tools.",
+          "description": "Digital product creator, designer, and entrepreneur based in Pakistan, specialized in software development, automation tools, and minimal interfaces.",
           "jobTitle": "Digital Product Creator & Entrepreneur",
+          "nationality": {
+            "@type": "Country",
+            "name": "Pakistan"
+          },
           "sameAs": [
-            "https://www.wikidata.org/wiki/Q140051161",
+            "https://www.wikidata.org/wiki/Q141132040",
             "https://instagram.com/MennHq",
             "https://x.com/MennHq",
             "https://youtube.com/@MennHq",
             "https://tiktok.com/@MennHq",
-            "https://medium.com/@MennHq"
+            "https://medium.com/@MennHq",
+            "https://linkedin.com/in/mennhq",
+            "https://github.com/mennhq",
+            "https://www.behance.net/menn",
+            "https://www.producthunt.com/@mennhq",
+            "https://www.crunchbase.com/person/mennhq",
+            "https://www.threads.net/@mennhq",
+            "https://www.pinterest.com/mennhq",
+            "https://www.reddit.com/user/mennhq"
           ],
           "knowsAbout": [
             "Software Development",
             "Automation Tools",
             "Digital Product Design",
+            "Model Context Protocol (MCP)",
+            "AI Agent Protocols",
             "Entrepreneurship"
           ]
         }
@@ -80,7 +123,91 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Semantic Static Content for AI Crawlers and Non-JavaScript Clients (Over 2,500 Characters of Rich Content) -->
+      <header>
+        <h1>MENN | Menn Maestro — Digital Product Creator &amp; Designer</h1>
+        <p>Official portfolio and digital product platform of <strong>Abdullah Harun</strong> (known professionally as <strong>Menn Maestro</strong> / <strong>MENN</strong>, digital identifier <code>@MennHq</code>). Canonical domain: <a href="https://mennhq.vercel.app/">https://mennhq.vercel.app/</a></p>
+      </header>
+
+      <main>
+        <section id="hero-summary">
+          <h2>Digital Product Designer &amp; Creator</h2>
+          <p>Creating digital products that turn ideas into results. At just 13 years old, Abdullah Harun (MENN Maestro) began building and launching practical digital tools and software utilities designed to provide immediate functional value and seamless user experiences.</p>
+        </section>
+
+        <section id="philosophy-summary">
+          <h2>Philosophy: Simple, Functional, Meaningful</h2>
+          <p>Great software and digital products are crafted with care, restraint, and an uncompromising commitment to clarity:</p>
+          <ul>
+            <li><strong>Digital Product Creator (Creation):</strong> From initial concept to full-stack execution, building practical, functional software tools that make a tangible difference in everyday workflows.</li>
+            <li><strong>Vision &amp; Ambition (Mindset):</strong> Driven by curiosity and rigorous standards—drawing aesthetic and engineering inspiration from high-performance machines like the BMW M5 F90 and Corvette C8.</li>
+            <li><strong>Authentic Early Experience (Advantage):</strong> Hands-on experience in digital creation, software architecture, and entrepreneurship from an early age, establishing disciplined craftsmanship.</li>
+            <li><strong>Agentic Architecture:</strong> Direct compatibility with AI agents, Model Context Protocol (MCP) servers, OpenAPI specifications, and machine-readable data feeds.</li>
+          </ul>
+        </section>
+
+        <section id="about-summary">
+          <h2>About Abdullah Harun (MENN / Menn Maestro)</h2>
+          <p>Abdullah Harun started with a clear objective: to design digital products that are intuitive, impactful, and easy to use. Based in Pakistan, Abdullah combines minimal visual design with modern engineering techniques to build standalone digital tools, developer utilities, and aesthetic interfaces.</p>
+          <blockquote>"Great products are simple, functional, and meaningful. Each creation is crafted with care, attention to detail, and a commitment to quality that stands the test of time."</blockquote>
+        </section>
+
+        <section id="developer-summary">
+          <h2>Developer Resources &amp; AI Agent Tools</h2>
+          <p>Explore machine-readable specifications and endpoints designed for developers and AI agents:</p>
+          <ul>
+            <li><a href="/docs">Developer Documentation &amp; Guides</a></li>
+            <li><a href="/openapi.json">OpenAPI 3.1.0 Specification (JSON)</a></li>
+            <li><a href="/openapi.yaml">OpenAPI 3.1.0 Specification (YAML)</a></li>
+            <li><a href="/.well-known/mcp">Model Context Protocol (MCP) Server Manifest</a></li>
+            <li><a href="/agent-instructions.md">AI Agent Guidance &amp; Interaction Manual</a></li>
+            <li><a href="/llms.txt">LLM Reference Index (llms.txt)</a></li>
+            <li><a href="/llms-full.txt">LLM Full System Context (llms-full.txt)</a></li>
+          </ul>
+        </section>
+
+        <section id="trust-anchors-summary">
+          <h2>Trust Anchors &amp; Verification</h2>
+          <p>Review our official trust and legal anchor pages:</p>
+          <ul>
+            <li><a href="/about">About Abdullah Harun &amp; Story</a></li>
+            <li><a href="/contact">Official Contact Channels</a></li>
+            <li><a href="/privacy">Privacy Policy &amp; Zero-Tracking Guarantee</a></li>
+            <li><a href="/terms">Terms of Service &amp; Licensing</a></li>
+            <li><a href="/sitemap.xml">XML Sitemap Index</a></li>
+          </ul>
+        </section>
+
+        <section id="contact-summary">
+          <h2>Contact &amp; Verified Profiles</h2>
+          <p>Email: <a href="mailto:MennHq@gmail.com">MennHq@gmail.com</a></p>
+          <p>Verified Profiles: 
+            <a href="https://www.wikidata.org/wiki/Q141132040" rel="noopener">Wikidata</a> | 
+            <a href="https://x.com/MennHq" rel="noopener">X / Twitter</a> | 
+            <a href="https://github.com/mennhq" rel="noopener">GitHub</a> | 
+            <a href="https://linkedin.com/in/mennhq" rel="noopener">LinkedIn</a> | 
+            <a href="https://instagram.com/MennHq" rel="noopener">Instagram</a> | 
+            <a href="https://youtube.com/@MennHq" rel="noopener">YouTube</a> | 
+            <a href="https://behance.net/menn" rel="noopener">Behance</a> | 
+            <a href="https://producthunt.com/@mennhq" rel="noopener">Product Hunt</a> | 
+            <a href="https://crunchbase.com/person/mennhq" rel="noopener">Crunchbase</a>
+          </p>
+        </section>
+      </main>
+
+      <footer>
+        <p>&copy; 2026 MENN Maestro (Abdullah Harun). All rights reserved.</p>
+      </footer>
+    </div>
+
+    <noscript>
+      <div style="padding: 24px; font-family: sans-serif; background: #000; color: #fff;">
+        <p>JavaScript is currently disabled. All text content, developer documentation, and verified trust anchors for MENN are available in raw HTML above.</p>
+        <p>Explore <a href="/about" style="color: #fff;">About</a>, <a href="/contact" style="color: #fff;">Contact</a>, <a href="/docs" style="color: #fff;">Docs</a>, <a href="/privacy" style="color: #fff;">Privacy</a>, or <a href="/terms" style="color: #fff;">Terms</a>.</p>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -26,7 +26,7 @@ export default function SeoManager({
         break;
       case 'about':
         title = "About MENN | The Story & Vision of Menn Maestro";
-        description = "Learn more about Abdullah Haroon (MENN), a 13-year-old digital product designer and developer turning ideas into results.";
+        description = "Learn more about Abdullah Harun (MENN), a 13-year-old digital product designer and developer turning ideas into results.";
         break;
       case 'contact':
         title = "Contact MENN | Let's Build the Future — Menn Maestro";

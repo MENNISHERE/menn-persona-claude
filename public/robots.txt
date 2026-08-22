@@ -3,3 +3,6 @@ Allow: /
 
 Sitemap: https://mennhq.vercel.app/sitemap.xml
 LLMs-txt: https://mennhq.vercel.app/llms.txt
+Agent-Instructions: https://mennhq.vercel.app/agent-instructions.md
+MCP-Server: https://mennhq.vercel.app/.well-known/mcp
+OpenAPI: https://mennhq.vercel.app/openapi.json
